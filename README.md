@@ -4,6 +4,7 @@
 
 ```
 $ nimble install kaitai_struct_nim_runtime --verbose
+$ nimble install argparse --verbose
 ```
 
 ```
