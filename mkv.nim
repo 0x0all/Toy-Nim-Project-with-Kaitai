@@ -45,12 +45,12 @@ try:
 
   var data = new_table[string, seq[string]]()
   var collect = proc (p: string) =
-    if (let (fit, ext) = nice_extension(p); fit):
+    if (let (fit, code) = nice_extension(p); fit):
       try:
-        let milli = duration(p, ext)
+        let milli = duration(p, code)
         var key = format(milli)
-        if key.starts_with("111"): key = format(p)
-        var same = data.get_or_default(ext, @[])
+        if key.starts_with("111"): key = util.format(p)
+        var same = data.get_or_default(key, @[])
         same.add(p)
         data[key] = same
       except:
