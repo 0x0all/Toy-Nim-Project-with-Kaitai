@@ -1,18 +1,17 @@
 import os, system, sugar, strutils, strformat
-import io
 import unicode
 import kaitai_struct_nim_runtime
-
+import ksy_helper
 
 func code_points*(utf8: string): int = utf8.runeLen
 
 
-func duration*(path: string, low: string): float = 
-  debug_echo &"path='{path}', ext='{ext}'"
+proc duration*(path: string, low: string): float = 
+  debug_echo &"path='{path}', ext='{low}'"
   var ks = new_kaitai_stream(path)
   case low
-  of ".mkv", ".webm": return mkv_duration(ks) / 1000;
-  of ".mp4":          return mp4_duration(ks, 0 == get_file_size(path) % 188); 
+  of ".mkv", ".webm": return mkv_duration(ks) / 1000
+  of ".mp4":          return mp4_duration(ks, 0 == get_file_size(path) mod 188)
   else: raise new_exception(OSError, "y u do dis to me")
 
 
