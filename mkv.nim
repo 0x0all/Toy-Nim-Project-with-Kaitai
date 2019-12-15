@@ -13,16 +13,20 @@ proc red(s:string) =
   reset_attributes()
 
 
-func get_max(data: TableRef[string, seq[string]], copy: var int64): int =
+func get_max(data: TableRef[string, seq[string]], top: int64): int =
+  var copy = top
   var max = 0
   for key, vec in data.pairs:
+    debug_echo &"key={key}, vec={vec}"
     for p in vec:
       copy -= 1
       let cp = code_points(p)
+      #debug_echo &"cp={cp}, max={max}, p={p}"
       if cp > max:
         max = cp
       if 0 == copy:
         return max
+  return max
 
 
 var options = new_parser("mkv"):
@@ -43,9 +47,12 @@ try:
   var collect = proc (p: string) =
     if (let (fit, ext) = nice_extension(p); fit):
       try:
-        var same = data.get_or_default(ext, @[p])
-        same.add(ext)
-        data[ext] = same
+        let milli = duration(p, ext)
+        var key = format(milli)
+        if key.starts_with("111"): key = format(p)
+        var same = data.get_or_default(ext, @[])
+        same.add(p)
+        data[key] = same
       except:
         red get_current_exception_msg()
 
@@ -57,6 +64,11 @@ try:
     for path in walk_dir_rec(opts.path, {pc_file}):
       collect(path)
 
-  let x = get_max(45, opts.top)
+  let max = get_max(data, opts.top.parse_int)
+  echo "\n"
+
+  for key, vec in data.pairs:
+    echo &"key={key}, vec={vec}"
+  
 except:
   red get_current_exception_msg()
