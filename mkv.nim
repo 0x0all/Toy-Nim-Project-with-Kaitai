@@ -48,8 +48,7 @@ try:
     if (let (fit, code) = nice_extension(p); fit):
       try:
         let milli = duration(p, code)
-        var key = format(milli)
-        if key.starts_with("111"): key = util.format(p)
+        let key = format(milli)
         var same = data.get_or_default(key, @[])
         same.add(p)
         data[key] = same
