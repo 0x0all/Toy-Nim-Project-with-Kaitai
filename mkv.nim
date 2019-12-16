@@ -19,11 +19,10 @@ func get_max(data: TableRef[string, seq[string]], top: int64): int =
   for key in to_seq(data.keys).sorted.reversed:
     for p in data[key]:
       copy -= 1
-      let cp = code_points(p)
-      if cp > max:
-        max = cp
-      if 0 == copy:
-        return max
+      let name = filename(p)
+      let cp = code_points(name)
+      if cp > max: max = cp
+      if 0 == copy: return max
   return max
 
 
@@ -64,8 +63,9 @@ proc main() =
     let max = get_max(data, opts.top.parse_int)
     echo "\n"
     for key in to_seq(data.keys).sorted.reversed:
-      echo &"    key={key}"
-      echo &"    key={key}, vec={data[key]}"
+      for p in to_seq(data[key]).sorted:
+        let name = filename(p)
+        echo &"    {pad(p, max)} -- {key}"
     echo "\n"
   except:
     red get_current_exception_msg()

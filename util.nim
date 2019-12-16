@@ -16,10 +16,13 @@ proc duration*(path: string, low: string): float =
   else: raise new_exception(OSError, "y u do dis to me")
 
 
-func format*(bytes: int): string = human_filesize(bytes)
+func format*(bytes: int): string       = human_filesize(bytes)
 
 
-func format*(seconds: float): string = human_duration(seconds)
+func format*(seconds: float): string   = human_duration(seconds)
+
+
+func pad*(s: string, max: int): string = unicode.align_left(s, max)
 
 
 func nice_extension*(path: string): tuple[fit: bool, low: string] =
@@ -28,3 +31,8 @@ func nice_extension*(path: string): tuple[fit: bool, low: string] =
   case low
   of ".mkv", ".mp4", ".webm": (true,  low)
   else:                       (false, "")
+
+
+proc filename*(path: string): string =
+  let (_, base, ext) = split_file(path)
+  return base & ext
