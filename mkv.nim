@@ -7,9 +7,12 @@ import terminal
 import util
 
 
-proc red(s:string) =
-  set_foreground_color(fg_red, true)
-  stdout.write(s & '\n')
+proc print(s:string, color: ForegroundColor = fg_red) =
+  set_foreground_color(color, true)
+  if fg_red == color:
+    stdout.write(s & '\n')
+  else:
+    stdout.write(s)
   reset_attributes()
 
 
@@ -50,7 +53,7 @@ proc main() =
           same.add(p)
           data[key] = same
         except:
-          red get_current_exception_msg()
+          print get_current_exception_msg()
  
     if opts.flat:
       for kind, path in walk_dir(opts.path):
@@ -59,15 +62,24 @@ proc main() =
     else:
       for path in walk_dir_rec(opts.path, {pc_file}):
         collect(path)
- 
-    let max = get_max(data, opts.top.parse_int)
+
+    var top = opts.top.parse_int
+    let max = get_max(data, top)
     echo "\n"
     for key in to_seq(data.keys).sorted.reversed:
       for p in to_seq(data[key]).sorted:
-        let name = filename(p)
-        echo &"    {pad(p, max)} -- {key}"
+        top -= 1
+        stdout.write("    ")
+        print(pad(filename(p), max), fg_blue)
+        stdout.write(" -- ")
+        print(key, fg_green)
+        stdout.write(" -- ")
+        echo " TODO"
+
+
+        #echo &"    {pad(filename(p), max)} -- {key}"
     echo "\n"
   except:
-    red get_current_exception_msg()
+    print get_current_exception_msg()
 
 main()  

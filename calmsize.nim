@@ -1,6 +1,8 @@
 import os, system, sugar, strutils, strformat
 
+
 template `//`[T](a, b: T): T = a /% b
+
 
 func human_filesize*(size: int): string =
   # ported from hachoir.core.tools
@@ -16,6 +18,7 @@ func human_filesize*(size: int): string =
     if fsize < divsr:
       return &"{fsize:.1f} {unit}"
   return &"{fsize} {xunit}"
+
 
 func human_duration*(seconds: float): string =
   let s = seconds.to_int
