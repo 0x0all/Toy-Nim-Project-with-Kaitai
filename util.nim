@@ -10,10 +10,13 @@ func code_points*(utf8: string): int = utf8.runeLen
 
 proc duration*(path: string, low: string): float = 
   var ks = new_kaitai_stream(path)
-  case low
-  of ".mkv", ".webm": return mkv_duration(ks) / 1000
-  of ".mp4":          return mp4_duration(ks, get_file_size(path))
-  else: raise new_exception(OSError, "y u do dis to me")
+  try:
+    case low
+    of ".mkv", ".webm": return mkv_duration(ks) / 1000
+    of ".mp4":          return mp4_duration(ks, get_file_size(path))
+    else: raise new_exception(OSError, "y u do dis to me")
+  finally:
+    ks.close()
 
 
 func format*(bytes: BiggestInt): string = human_filesize(bytes)
@@ -35,4 +38,4 @@ func nice_extension*(path: string): tuple[fit: bool, low: string] =
 
 func filename*(path: string): string =
   let (_, base, ext) = split_file(path)
-  return base & ext
+  base & ext

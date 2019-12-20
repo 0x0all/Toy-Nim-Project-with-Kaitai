@@ -60,7 +60,14 @@ proc find_mvhd(ks: KaitaiStream, start: int): int =
 
 
 proc is_mpeg2(ks: KaitaiStream): bool =
-  return true
+  var
+    o = new_mp4_atom_t(ks)
+  for attempt in [0, 1, 2, 3, 4]:
+    let offset = 188 * attempt
+    o.ks.seek(offset)
+    let sync = o.ks.read_u1
+    if 0x47 != sync: return false
+  true
 
 
 proc mp4_duration*(ks: KaitaiStream, fsize: BiggestInt): float =
