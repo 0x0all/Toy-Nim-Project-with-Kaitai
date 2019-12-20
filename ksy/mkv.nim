@@ -2,11 +2,6 @@ import os, system, sugar, strutils, strformat
 import kaitai_struct_nim_runtime
 
 
-#if KAITAI_STRUCT_VERSION < 9000L
-#error "Incompatible Kaitai Struct C++/STL API: version 0.9 or later is required"
-#endif
-
-
 type
   Size_type_t* = enum
     st_init   = 0
