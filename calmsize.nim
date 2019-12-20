@@ -4,11 +4,11 @@ import os, system, sugar, strutils, strformat
 template `//`[T](a, b: T): T = a /% b
 
 
-func human_filesize*(size: int): string =
+func human_filesize*(size: BiggestInt): string =
   # ported from hachoir.core.tools
   if size < 10000:
     return &"{size} bytes"
-  let units = ["KB", "MB", "GB", "TB"]
+  let units = ["Kb", "Mb", "Gb", "Tb"]
   var fsize = float(size)
   let divsr = 1024.0
   var xunit = "BUG"

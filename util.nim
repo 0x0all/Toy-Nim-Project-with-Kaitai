@@ -16,10 +16,10 @@ proc duration*(path: string, low: string): float =
   else: raise new_exception(OSError, "y u do dis to me")
 
 
-func format*(bytes: int): string       = human_filesize(bytes)
+func format*(bytes: BiggestInt): string = human_filesize(bytes)
 
 
-func format*(seconds: float): string   = human_duration(seconds)
+func format*(seconds: float): string    = human_duration(seconds)
 
 
 func pad*(s: string, max: int): string = unicode.align_left(s, max)
@@ -33,6 +33,6 @@ func nice_extension*(path: string): tuple[fit: bool, low: string] =
   else:                       (false, "")
 
 
-proc filename*(path: string): string =
+func filename*(path: string): string =
   let (_, base, ext) = split_file(path)
   return base & ext

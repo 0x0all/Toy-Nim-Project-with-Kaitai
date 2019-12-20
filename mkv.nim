@@ -44,7 +44,7 @@ proc main() =
       raise new_exception(OSError, &"directory '{opts.path}' does not exist")
  
     var data = new_table[string, seq[string]]()
-    var collect = proc (p: string) =
+    let collect = proc (p: string) =
       if (let (fit, code) = nice_extension(p); fit):
         try:
           let milli = duration(p, code)
@@ -74,10 +74,14 @@ proc main() =
         stdout.write(" -- ")
         print(key, fg_green)
         stdout.write(" -- ")
-        echo " TODO"
-
-
-        #echo &"    {pad(filename(p), max)} -- {key}"
+        
+        let s = format(get_file_size(p))
+        if s.ends_with("Gb"):
+          print(align(s, 9))
+        else:
+          echo align(s, 9)
+        if 0 == top: break
+      if 0 == top: break
     echo "\n"
   except:
     print get_current_exception_msg()
