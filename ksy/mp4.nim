@@ -1,4 +1,4 @@
-import os, system, sugar, strutils, strformat
+import system, strformat
 import kaitai_struct_nim_runtime
 
 

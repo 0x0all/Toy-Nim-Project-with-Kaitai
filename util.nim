@@ -1,4 +1,4 @@
-import os, system, sugar, strutils, strformat
+import os, system, strutils
 import unicode
 import calmsize
 import kaitai_struct_nim_runtime
