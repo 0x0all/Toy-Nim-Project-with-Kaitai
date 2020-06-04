@@ -7,7 +7,7 @@ import terminal
 import util
 
 
-proc print(s:string, color: ForegroundColor = fg_red) =
+proc print(s: string, color: ForegroundColor = fg_red) =
   set_foreground_color(color, true)
   if fg_red == color:
     stdout.write(s & '\n')
@@ -31,9 +31,9 @@ func get_max(data: TableRef[string, seq[string]], top: int64): int =
 
 var options = new_parser("mkv"):
   help("Longest movies (in current directory)")
-  option("-p", "--path", default=".", help="Path to movies.")
-  option("-t", "--top", default="10", help="Number of lines to show, 0 is inf.")
-  flag(  "-f", "--flat", help="No recursion.")
+  option("-p", "--path", default = ".", help = "Path to movies.")
+  option("-t", "--top", default = "10", help = "Number of lines to show, 0 is inf.")
+  flag("-f", "--flat", help = "No recursion.")
 
 proc main() =
   try:
@@ -42,7 +42,7 @@ proc main() =
       opts.path = get_current_dir()
     if not dir_exists opts.path:
       raise new_exception(OSError, &"directory '{opts.path}' does not exist")
- 
+
     var data = new_table[string, seq[string]]()
     let collect = proc (p: string) =
       if (let (fit, code) = nice_extension(p); fit):
@@ -54,7 +54,7 @@ proc main() =
           data[key] = same
         except:
           print get_current_exception_msg()
- 
+
     if opts.flat:
       for kind, path in walk_dir(opts.path):
         if kind == pc_file:
@@ -74,7 +74,7 @@ proc main() =
         stdout.write(" -- ")
         print(key, fg_green)
         stdout.write(" -- ")
-        
+
         let s = format(get_file_size(p))
         if s.ends_with("Gb"):
           print(align(s, 9))
@@ -86,4 +86,4 @@ proc main() =
   except:
     print get_current_exception_msg()
 
-main()  
+main()
