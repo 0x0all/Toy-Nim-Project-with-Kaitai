@@ -9,7 +9,7 @@ func code_points*(utf8: string): int = utf8.runeLen
 
 
 proc duration*(path: string, low: string): float = 
-  var ks = new_kaitai_stream(path)
+  var ks = new_kaitai_file_stream(path)
   try:
     case low
     of ".mkv", ".webm": return mkv_duration(ks) / 1000

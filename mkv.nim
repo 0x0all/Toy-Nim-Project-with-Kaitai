@@ -1,4 +1,4 @@
-import os, system, sugar, sequtils, strutils, strformat
+import os, system, sequtils, strutils, strformat
 import tables
 import algorithm
 import argparse

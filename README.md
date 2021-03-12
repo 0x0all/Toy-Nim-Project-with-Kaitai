@@ -3,7 +3,7 @@
 ![Image](<https://i.imgur.com/NYpxwwX.png>)
 
 ```
-$ nimble install kaitai_struct_nim_runtime --verbose
+$ nimble install kaitai_struct_nim_runtime@#68fbbf9 --verbose
 $ nimble install argparse --verbose
 ```
 
